@@ -52,8 +52,6 @@
 #define BOARD_PF5302_DEV_ADDR       0x29U
 #define BOARD_PCA2131_DEV_ADDR      0x53U
 
-#define GPIO5_INPUT_PF09_INT        7U
-
 /* Local types */
 
 /* Local variables */
@@ -67,9 +65,9 @@ PCA2131_Type pca2131Dev;
 
 irq_prio_info_t s_brdIrqPrioInfo[BOARD_NUM_IRQ_PRIO_IDX] =
 {
-    [BOARD_IRQ_PRIO_IDX_GPIO5_0] =
+    [BOARD_IRQ_PRIO_IDX_GPIO1_0] =
     {
-        .irqId = GPIO5_0_IRQn,
+        .irqId = GPIO1_0_IRQn,
         .irqCntr = 0U,
         .basePrio = 0U,
         .dynPrioEn = false
@@ -191,49 +189,8 @@ int32_t BRD_SM_SerialDevicesInit(void)
         }
     }
 
-    if (status == SM_ERR_SUCCESS)
-    {
-        rgpio_pin_config_t gpioConfig =
-        {
-            kRGPIO_DigitalInput,
-            0U
-        };
-
-        /* Init GPIO5-7 */
-        RGPIO_PinInit(GPIO5, 7U, &gpioConfig);
-        RGPIO_SetPinInterruptConfig(GPIO5, 7U, kRGPIO_InterruptOutput0,
-            kRGPIO_InterruptLogicZero);
-    }
-
     /* Return status */
     return status;
-}
-
-/*--------------------------------------------------------------------------*/
-/* GPIO5 handler                                                            */
-/*--------------------------------------------------------------------------*/
-void GPIO5_0_IRQHandler(void)
-{
-    uint32_t flags;
-
-    /* Get GPIO status */
-    flags = RGPIO_GetPinsInterruptFlags(GPIO5, kRGPIO_InterruptOutput0);
-
-    /* Clear GPIO interrupts */
-    RGPIO_ClearPinsInterruptFlags(GPIO5, kRGPIO_InterruptOutput0, flags);
-
-    /* Handle PF09 interrupt */
-    if ((flags & BIT32(GPIO5_INPUT_PF09_INT)) != 0U)
-    {
-        /* Asserts low */
-        if (RGPIO_ReadPinInput(GPIO5, GPIO5_INPUT_PF09_INT) == 0U)
-        {
-            BRD_SM_Pf09Handler();
-        }
-    }
-
-    /* Adjust dynamic IRQ priority */
-    (void) DEV_SM_IrqPrioUpdate();
 }
 
 /*==========================================================================*/

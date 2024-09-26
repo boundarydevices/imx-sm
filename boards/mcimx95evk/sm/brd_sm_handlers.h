@@ -61,8 +61,8 @@
 /*! Number of board IRQs participating dynamic prioritization */
 #define BOARD_NUM_IRQ_PRIO_IDX                 1U
 
-/*! Dynamic IRQ priority table index for GPIO5 */
-#define BOARD_IRQ_PRIO_IDX_GPIO5_0             0U
+/*! Dynamic IRQ priority table index for GPIO1 */
+#define BOARD_IRQ_PRIO_IDX_GPIO1_0             0U
 
 /* Types */
 
@@ -94,11 +94,6 @@ extern bool pca2131Used;
  * @return Returns the status (::SM_ERR_SUCCESS = success).
  */
 int32_t BRD_SM_SerialDevicesInit(void);
-
-/*!
- * GPIO 1 interrupt 0 handler.
- */
-void GPIO5_0_IRQHandler(void);
 
 /** @} */
 

@@ -337,9 +337,6 @@ void BOARD_InitHandlers(void)
     /* Enable FCCU handler */
     NVIC_SetPriority(FCCU_INT0_IRQn, IRQ_PRIO_NOPREEMPT_CRITICAL);
     NVIC_EnableIRQ(FCCU_INT0_IRQn);
-
-    /* Enable GPIO5 handler */
-    NVIC_EnableIRQ(GPIO5_0_IRQn);
 }
 
 /*--------------------------------------------------------------------------*/
@@ -507,10 +504,6 @@ void BOARD_SystemSleepPrepare(uint32_t sleepMode, uint32_t sleepFlags)
         (void) CPU_PerLpiConfigSet(CPU_IDX_M33P, s_uartConfig.perLpiId,
             CPU_PER_LPI_ON_RUN_WAIT_STOP);
     }
-
-    /* Configure LPI for GPIO5 */
-    (void) CPU_PerLpiConfigSet(CPU_IDX_M33P, CPU_PER_LPI_IDX_GPIO5,
-        CPU_PER_LPI_ON_RUN_WAIT_STOP);
 }
 
 /*--------------------------------------------------------------------------*/
