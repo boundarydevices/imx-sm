@@ -72,9 +72,6 @@
 
 /* External variables */
 
-/*! Handle to acces PCAL6408A */
-extern PCAL6408A_Type pcal6408aDev;
-
 /*! Handle to acces PF09 */
 extern PF09_Type pf09Dev;
 
