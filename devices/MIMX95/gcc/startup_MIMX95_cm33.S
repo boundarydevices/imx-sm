@@ -95,7 +95,7 @@ __isr_vector:
     .long   Reserved68_IRQHandler                           /* General Purpose Input/Output 3 interrupt 1*/
     .long   Reserved69_IRQHandler                           /* General Purpose Input/Output 4 interrupt 0*/
     .long   Reserved70_IRQHandler                           /* General Purpose Input/Output 4 interrupt 1*/
-    .long   Reserved71_IRQHandler                           /* General Purpose Input/Output 5 interrupt 0*/
+    .long   GPIO5_0_IRQHandler                              /* General Purpose Input/Output 5 interrupt 0*/
     .long   Reserved72_IRQHandler                           /* General Purpose Input/Output 5 interrupt 1*/
     .long   I3C2_IRQHandler                                 /* Improved Inter-Integrated Circuit 2 interrupt*/
     .long   LPI2C3_IRQHandler                               /* Low Power Inter-Integrated Circuit module 3*/
@@ -767,7 +767,7 @@ SysTick_Handler:
     def_irq_handler    Reserved68_IRQHandler
     def_irq_handler    Reserved69_IRQHandler
     def_irq_handler    Reserved70_IRQHandler
-    def_irq_handler    Reserved71_IRQHandler
+    def_irq_handler    GPIO5_0_IRQHandler
     def_irq_handler    Reserved72_IRQHandler
     def_irq_handler    I3C2_IRQHandler
     def_irq_handler    LPI2C3_IRQHandler

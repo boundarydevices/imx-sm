@@ -122,7 +122,7 @@ typedef enum IRQn
     Reserved68_IRQn    = 52,  /**< General Purpose Input/Output 3 interrupt 1 */
     Reserved69_IRQn    = 53,  /**< General Purpose Input/Output 4 interrupt 0 */
     Reserved70_IRQn    = 54,  /**< General Purpose Input/Output 4 interrupt 1 */
-    Reserved71_IRQn    = 55,  /**< General Purpose Input/Output 5 interrupt 0 */
+    GPIO5_0_IRQn       = 55,  /**< General Purpose Input/Output 5 interrupt 0 */
     Reserved72_IRQn    = 56,  /**< General Purpose Input/Output 5 interrupt 1 */
     I3C2_IRQn          = 57,  /**< Improved Inter-Integrated Circuit 2 interrupt */
     LPI2C3_IRQn        = 58,  /**< Low Power Inter-Integrated Circuit module 3 */
