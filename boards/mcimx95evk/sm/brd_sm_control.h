@@ -186,14 +186,6 @@ int32_t BRD_SM_ControlExtGet(uint32_t ctrlId, uint32_t addr,
  */
 int32_t BRD_SM_ControlFlagsSet(uint32_t ctrlId, uint32_t flags);
 
-/*!
- * Control handler.
- *
- * @param[in]     status   Interrupt status
- * @param[in]     val      Signal state
- */
-void BRD_SM_ControlHandler(uint8_t status, uint8_t val);
-
 /** @} */
 
 #endif /* BRD_SM_CONTROL_H */

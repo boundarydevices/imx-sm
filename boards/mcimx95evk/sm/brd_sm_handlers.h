@@ -52,28 +52,21 @@
 
 #include "sm.h"
 #include "dev_sm.h"
-#include "fsl_pcal6408a.h"
 #include "fsl_pf09.h"
 #include "fsl_pf53.h"
 #include "fsl_pca2131.h"
 
 /* Defines */
 
-/*! Initial PCAL6408A interrupt mask */
-#define PCAL6408A_INITIAL_MASK  0xF7U
-
 /*! Number of board IRQs participating dynamic prioritization */
 #define BOARD_NUM_IRQ_PRIO_IDX                 1U
 
-/*! Dynamic IRQ priority table index for GPIO1 */
-#define BOARD_IRQ_PRIO_IDX_GPIO1_0             0U
+/*! Dynamic IRQ priority table index for GPIO5 */
+#define BOARD_IRQ_PRIO_IDX_GPIO5_0             0U
 
 /* Types */
 
 /* External variables */
-
-/*! Handle to acces PCAL6408A */
-extern PCAL6408A_Type pcal6408aDev;
 
 /*! Handle to acces PF09 */
 extern PF09_Type pf09Dev;
@@ -103,22 +96,9 @@ extern bool pca2131Used;
 int32_t BRD_SM_SerialDevicesInit(void);
 
 /*!
- * Enable/disable bus expander interrupts.
- *
- * @param[in]     val      Value to write
- * @param[in]     mask     Mask of bits to modify
- *
- * This function allows a caller to configure the bus expander.
- * interrupts.
- *
- * @return Returns the status (::SM_ERR_SUCCESS = success).
- */
-int32_t BRD_SM_BusExpMaskSet(uint8_t val, uint8_t mask);
-
-/*!
  * GPIO 1 interrupt 0 handler.
  */
-void GPIO1_0_IRQHandler(void);
+void GPIO5_0_IRQHandler(void);
 
 /** @} */
 
