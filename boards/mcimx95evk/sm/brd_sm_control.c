@@ -115,29 +115,6 @@ int32_t BRD_SM_ControlGet(uint32_t ctrlId, uint32_t *numRtn, uint32_t *rtn)
             *numRtn = 0U;
             status = SM_ERR_NOT_SUPPORTED;
         }
-        else
-        {
-            uint8_t data;
-
-            /* Read expander data input */
-            if (PCAL6408A_InputGet(&g_pcal6408aDev, &data))
-            {
-                uint32_t shift = ctrlId - DEV_SM_NUM_CTRL;
-
-                /* Adjust bit position */
-                if (shift > 0U)
-                {
-                    shift += 3U;
-                }
-
-                *numRtn = 1U;
-                rtn[0] = (((uint32_t) data) >> shift) & 0x1UL;
-            }
-            else
-            {
-                status = SM_ERR_HARDWARE_ERROR;
-            }
-        }
     }
     else
     {
