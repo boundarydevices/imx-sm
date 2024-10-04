@@ -53,6 +53,7 @@
 #ifdef DEVICE_HAS_ELE
 #include "fsl_ele.h"
 #endif
+#include "fsl_lpi2c.h"
 
 /* Defines */
 
@@ -137,6 +138,7 @@ static int32_t MONITOR_CmdGroup(int32_t argc, const char * const argv[]);
 static int32_t MONITOR_CmdSsm(int32_t argc, const char * const argv[]);
 static int32_t MONITOR_CmdCustom(int32_t argc, const char * const argv[]);
 static int32_t MONITOR_CmdTest(int32_t argc, const char * const argv[]);
+static int32_t MONITOR_CmdI2C(int32_t argc, const char * const argv[], int32_t rw);
 
 /* Local Variables */
 
@@ -209,7 +211,9 @@ int32_t MONITOR_Dispatch(char *line)
         "grp",
         "ssm",
         "custom",
-        "test"
+        "test",
+        "i2c.r",
+        "i2c.w",
     };
 
     /* Parse Line */
@@ -397,6 +401,12 @@ int32_t MONITOR_Dispatch(char *line)
                 break;
             case 55:  /* test */
                 status = MONITOR_CmdTest(argc - 1, &argv[1]);
+                break;
+            case 56:  /* i2c.r */
+                status = MONITOR_CmdI2C(argc - 1, &argv[1], READ);
+                break;
+            case 57:  /* i2c.w */
+                status = MONITOR_CmdI2C(argc - 1, &argv[1], WRITE);
                 break;
             default:
                 status = SM_ERR_NOT_FOUND;
@@ -3237,3 +3247,59 @@ static int32_t MONITOR_CmdTest(int32_t argc, const char * const argv[])
     return status;
 }
 
+/*--------------------------------------------------------------------------*/
+/* I2C command                                                             */
+/*--------------------------------------------------------------------------*/
+static int32_t MONITOR_CmdI2C(int32_t argc, const char * const argv[], int32_t rw)
+{
+    int32_t status = SM_ERR_SUCCESS;
+    lpi2c_master_transfer_t xfer;
+    uint8_t buf = 0;
+    uint32_t val;
+
+    if (argc != ((rw == (int)READ) ? 2 : 3))
+    {
+        status = SM_ERR_MISSING_PARAMETERS;
+        goto end;
+    }
+
+    xfer.flags          = 0U;
+    xfer.subaddressSize = 1U;
+    xfer.data           = &buf;
+    xfer.dataSize       = 1U;
+
+    status = MONITOR_ConvU32(argv[0], &val);
+    if (status != SM_ERR_SUCCESS)
+        goto end;
+    xfer.slaveAddress = val & 0xff;
+
+    status = MONITOR_ConvU32(argv[1], &val);
+    if (status != SM_ERR_SUCCESS)
+        goto end;
+    xfer.subaddress = val & 0xff;
+
+    if (rw == READ)
+    {
+        xfer.direction      = kLPI2C_Read;
+    }
+    else
+    {
+        xfer.direction      = kLPI2C_Write;
+        status = MONITOR_ConvU32(argv[2], &val);
+        if (status != SM_ERR_SUCCESS)
+            goto end;
+        buf = val & 0xff;
+    }
+
+    status = LPI2C_MasterTransferBlocking(LPI2C1, &xfer);
+    if (status == SM_ERR_SUCCESS)
+    {
+        printf("i2c1 dev %#02x, reg %#02x, %s %#02x\n",
+               xfer.slaveAddress, xfer.subaddress,
+               (rw == (int)READ) ? "read" : "wrote", buf);
+    }
+
+end:
+    /* Return status */
+    return status;
+}
